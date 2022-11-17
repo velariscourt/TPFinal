@@ -20,18 +20,18 @@ except:
 root = Tk()
 root.title("ALUMNOS")
 
-Label(root, text="Apellido:").grid(pady=5, row=0, column=0)
-Label(root, text="Nombre:").grid( pady=5, row=1, column=0)
+Label(root, text="Nombre:").grid( pady=5, row=0, column=0)
+Label(root, text="Apellido:").grid(pady=5, row=1, column=0)
 Label(root, text="Materia:").grid(pady=5, row=2, column=0)
 Label(root, text="Nota:").grid( pady=5, row=3, column=0)
 
-# Entry Apellido
-apeVar = StringVar()
-Entry(root, width=20, textvariable=apeVar).grid(padx=5, row=0, column=1)
-
 # Entry Nombre
 nomVar = StringVar()
-Entry(root, width=20, textvariable=nomVar).grid(padx=5, row=1, column=1)
+Entry(root, width=20, textvariable=nomVar).grid(padx=5, row=0, column=1)
+
+# Entry Apellido
+apeVar = StringVar()
+Entry(root, width=20, textvariable=apeVar).grid(padx=5, row=1, column=1)
 
 # Entry Materias
 matVar = StringVar()
@@ -43,12 +43,19 @@ Entry(root, width=20, textvariable=notaVar).grid(padx=5, row=3, column=1)
 
 def agregar():
     global listado
-    materia = {}
-    materia[matVar.get()]=notaVar.get()
+    datos = {}
+
+    nomVar.set(nomVar.get().lower())
+    apeVar.set(apeVar.get().lower())
+
+    datos[matVar.get()]=notaVar.get()
     
     if not apeVar.get()+nomVar.get() in listado.keys():
-        listado[apeVar.get()+nomVar.get()]=[]
-    listado[apeVar.get()+nomVar.get()].append(materia)
+        listado[apeVar.get()+nomVar.get()]={}
+        listado[apeVar.get()+nomVar.get()]["Nombre"]=nomVar.get()
+        listado[apeVar.get()+nomVar.get()]["Apellido"]=apeVar.get()
+        listado[apeVar.get()+nomVar.get()]['materias']=[]
+    listado[apeVar.get()+nomVar.get()]['materias'].append(datos)
     
     print(f"Agregar {apeVar.get()}")
     print (listado)
@@ -65,13 +72,14 @@ def salir():
 
 def ventana_sec(lista):
     ventana=Tk()
+    ventana.title(f"{apeVar.get().upper()} {nomVar.get().upper()}")
     
-    listbox = Listbox(ventana, height = 10,
-                  width = 200,
+    listbox = Listbox(ventana, height = 20,
+                  width = 100,
                   bg = "grey",
                   activestyle = 'dotbox',
-                  font = "Helvetica",
-                  fg = "yellow")
+                  font = "Arial",
+                  fg = "black")
     
     for a in lista:
         for k, v in a.items():
@@ -79,15 +87,17 @@ def ventana_sec(lista):
 
     listbox.pack()
 
+# Agregar mayúsculas, centrar y jerarquización del nombre y apellido (ambos en mayus)
+
 def consultar():
     if apeVar.get()=="" or nomVar.get()=="":
-        messagebox.showerror("Fuiste Rickrolleado XD", "Completar los campos")
+        messagebox.showerror("ERROR", "Por favor, completar los campos obligatorios")
     
     else:
         if not apeVar.get()+nomVar.get() in listado.keys():
-            messagebox.showerror("Fuiste Rickrolleado XD", "El alumno no se encuentra")
+            messagebox.showerror("ERROR", "El alumno no se encuentra en el archivo")
         else:
-            ventana_sec(listado[apeVar.get()+nomVar.get()])
+            ventana_sec(listado[apeVar.get()+nomVar.get()]["materias"])
 
 
 
