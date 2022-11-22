@@ -51,18 +51,19 @@ def agregar():
     global listado
     datos = {}
 
-    nomVar.set(nomVar.get().lower())
-    apeVar.set(apeVar.get().lower())
-    matVar.set(matVar.get().lower())
+  #  nomVar.set(nomVar.get().lower())
+   # apeVar.set(apeVar.get().lower())
+    #matVar.set(matVar.get().lower())
 
-    datos[normalizar(matVar.get())]=notaVar.get()
+    datos[normalizar(matVar.get().lower())]=notaVar.get()
+    new_key= (apeVar.get()+nomVar.get()).lower()
     
-    if not apeVar.get()+nomVar.get() in listado.keys():
-        listado[apeVar.get()+nomVar.get()]={}
-        listado[apeVar.get()+nomVar.get()]["Nombre"]=normalizar(nomVar.get())
-        listado[apeVar.get()+nomVar.get()]["Apellido"]=normalizar(apeVar.get())
-        listado[apeVar.get()+nomVar.get()]["Materias"]=[]
-    listado[apeVar.get()+nomVar.get()]["Materias"].append(datos)
+    if not new_key in listado.keys():
+        listado[new_key]={}
+        listado[new_key]["Nombre"]=normalizar(nomVar.get().lower())
+        listado[new_key]["Apellido"]=normalizar(apeVar.get().lower())
+        listado[new_key]["Materias"]=[]
+    listado[new_key]["Materias"].append(datos)
     
     print(f"Agregar {apeVar.get()}")
     print (listado)
@@ -86,33 +87,41 @@ def ventana_sec(lista):
                   bg = "grey",
                   activestyle = "dotbox",
                   font = "Arial",
-                  fg = "black"
+                  fg = "black",
                   height = 20,
-                  upper = "listbox"
                   )                       
 
     for a in lista:
         for k, v in a.items():
-            listbox.insert(END, f"{k}: {v}")
+            listbox.insert(END, f"{k.capitalize()}: {v}")
 
     listbox.pack()
 
 # Solucionar mayúsculas y minúsculas. Como lo introduces, es como se muestra en la lista; se tienen que mostrar en mayúscula en la lista sin importar cómo se hayan agregado
 # Centrar y jerarquización del nombre y apellido (ambos en mayus)
 # Agregar enter
+# No funciona el normalizador al consultar
 
 def consultar():
     if apeVar.get()=="" or nomVar.get()=="":
         messagebox.showerror("ERROR", "Por favor, completar los campos obligatorios")
     
     else:
-        if not apeVar.get()+nomVar.get() in listado.keys():
+        new_key=(apeVar.get()+nomVar.get()).lower()
+        if not new_key in listado.keys():
             messagebox.showerror("ERROR", "El alumno no se encuentra en el archivo")
         else:
-            ventana_sec(listado[apeVar.get()+nomVar.get()]["Materias"])
+            ventana_sec(listado[new_key]["Materias"])
+
+def eliminar_info(datos):
+    datos.clear()
+    print("Se han eliminado exitosamente los datos")
+
+# Cómo eliminar archivos
+# Excepciones ¿y si ya se borró el archivo?
 
 Button(root, text="Agregar", width=20, command=agregar).grid(padx=10, pady=10, row=4, column=0)
 Button(root, text="Salir", width=20, command=salir).grid(padx=10, pady=10, row=4, column=1)
 Button(root, text="Consultar", width=45, command=consultar).grid(padx=10, pady=10, row=5, columnspan=2)
-
+Button(root, text="Eliminar información", width=45, command=eliminar_info).grid(padx=10, pady=10, row=6, columnspan=2)
 root.mainloop()

@@ -1,25 +1,13 @@
 {
-   "perezjuan": {
-      "Nombre": "juan",
+   "perezluis": {
+      "Nombre": "luis",
       "Apellido": "perez",
-      "materias": [
+      "Materias": [
          {
-            "historia": "6"
+            "biologia": "5"
          },
          {
-            "mate": "6"
-         }
-      ]
-   },
-   "juanperez": {
-      "Nombre": "perez",
-      "Apellido": "juan",
-      "materias": [
-         {
-            "fisica": "5"
-         },
-         {
-            "historia": "8"
+            "": ""
          }
       ]
    }
