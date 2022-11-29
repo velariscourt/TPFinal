@@ -1,12 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
 import json
+import os
+FILE='sample.json'
 
 listado = {}
 
 try:
 # Opening JSON file
-    with open('sample.json', 'r') as openfile:
+    with open(FILE, 'r') as openfile:
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
@@ -74,7 +76,7 @@ def salir():
     result = json.dumps(listado, indent = 3)
     print(result)
     # Writing to sample.json
-    with open("sample.json", "w") as outfile:
+    with open(FILE, "w") as outfile:
         outfile.write(result)
     quit()
 
@@ -113,12 +115,13 @@ def consultar():
         else:
             ventana_sec(listado[new_key]["Materias"])
 
-def eliminar_info(datos):
-    datos.clear()
-    print("Se han eliminado exitosamente los datos")
-
-# Cómo eliminar archivos
-# Excepciones ¿y si ya se borró el archivo?
+def eliminar_info ():
+    try:
+        #os.remove(FILE)
+        listado.clear()
+        print("Se han eliminado exitosamente los datos")
+    except:
+        print("No hay datos para eliminar, se creará un nuevo listado")
 
 Button(root, text="Agregar", width=20, command=agregar).grid(padx=10, pady=10, row=4, column=0)
 Button(root, text="Salir", width=20, command=salir).grid(padx=10, pady=10, row=4, column=1)
