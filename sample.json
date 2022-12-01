@@ -1,10 +1,28 @@
 {
    "cosellomatias": {
-      "Nombre": "matias",
-      "Apellido": "cosello",
+      "Nombre": "Mat\u00edas",
+      "Apellido": "Cosello",
       "Materias": [
          {
+            "literatura": "7"
+         },
+         {
             "historia": "8"
+         },
+         {
+            "geograf\u00eda": "8"
+         },
+         {
+            "informatica": "8"
+         }
+      ]
+   },
+   "perezjuan": {
+      "Nombre": "Juan",
+      "Apellido": "P\u00e9rez",
+      "Materias": [
+         {
+            "historia": "9"
          }
       ]
    }

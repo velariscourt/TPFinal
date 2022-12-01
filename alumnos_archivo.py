@@ -8,7 +8,7 @@ listado = {}
 
 try:
 # Opening JSON file
-    with open(FILE, 'r') as openfile:
+    with open(FILE, 'r', encoding="utf-8") as openfile:
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
@@ -57,16 +57,16 @@ def agregar():
    # apeVar.set(apeVar.get().lower())
     #matVar.set(matVar.get().lower())
 
-    datos[normalizar(matVar.get().lower())]=notaVar.get()
-    new_key= (apeVar.get()+nomVar.get()).lower()
+    datos[(matVar.get().lower())]=notaVar.get()
+    new_key= normalizar((apeVar.get()+nomVar.get()).lower())
     
     if not new_key in listado.keys():
         listado[new_key]={}
-        listado[new_key]["Nombre"]=normalizar(nomVar.get().lower())
-        listado[new_key]["Apellido"]=normalizar(apeVar.get().lower())
+        listado[new_key]["Nombre"]=(nomVar.get().capitalize())
+        listado[new_key]["Apellido"]=(apeVar.get().capitalize())
         listado[new_key]["Materias"]=[]
     listado[new_key]["Materias"].append(datos)
-    
+
     print(f"Agregar {apeVar.get()}")
     print (listado)
 
@@ -76,13 +76,14 @@ def salir():
     result = json.dumps(listado, indent = 3)
     print(result)
     # Writing to sample.json
-    with open(FILE, "w") as outfile:
+    with open(FILE, "w", encoding="utf-8") as outfile:
         outfile.write(result)
     quit()
 
-def ventana_sec(lista):
+def ventana_sec(lista, nombre, apellido):
     ventana=Tk()
-    ventana.title(f"{apeVar.get().upper()}, {nomVar.get().upper()}")
+    ventana.title(f"{apellido.upper()}, {nombre.upper()}")
+    #ventana.title(f"{apeVar.get().upper()}, {nomVar.get().upper()}")
     
     listbox = Listbox(ventana, justify = "center",
                   width = 100,
@@ -92,6 +93,8 @@ def ventana_sec(lista):
                   fg = "black",
                   height = 20,
                   )                       
+    
+    listbox.pack(padx=10,pady=10,fill=BOTH, expand=True)
 
     for a in lista:
         for k, v in a.items():
@@ -109,11 +112,11 @@ def consultar():
         messagebox.showerror("ERROR", "Por favor, completar los campos obligatorios")
     
     else:
-        new_key=(apeVar.get()+nomVar.get()).lower()
+        new_key=normalizar(apeVar.get()+nomVar.get()).lower()
         if not new_key in listado.keys():
             messagebox.showerror("ERROR", "El alumno no se encuentra en el archivo")
         else:
-            ventana_sec(listado[new_key]["Materias"])
+            ventana_sec(listado[new_key]["Materias"], listado[new_key]["Nombre"], listado[new_key]["Apellido"])
 
 def eliminar_info ():
     try:
@@ -127,4 +130,5 @@ Button(root, text="Agregar", width=20, command=agregar).grid(padx=10, pady=10, r
 Button(root, text="Salir", width=20, command=salir).grid(padx=10, pady=10, row=4, column=1)
 Button(root, text="Consultar", width=45, command=consultar).grid(padx=10, pady=10, row=5, columnspan=2)
 Button(root, text="Eliminar información", width=45, command=eliminar_info).grid(padx=10, pady=10, row=6, columnspan=2)
+
 root.mainloop()
